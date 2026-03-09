@@ -628,8 +628,8 @@
 // HELPERS — build play URL (YouTube search or Spotify artist page)
 // ============================================================
 function playURL(a) {
-  if (a.spotifyArtist) return { url: `https://open.spotify.com/artist/${a.spotifyArtist}`, type: 'sp', label: 'Play on Spotify' };
   if (a.youtube) return { url: a.youtube, type: 'yt', label: 'Watch on YouTube' };
+  if (a.spotifyArtist) return { url: `https://open.spotify.com/artist/${a.spotifyArtist}`, type: 'sp', label: 'Play on Spotify' };
   // fallback: YouTube search
   const q = encodeURIComponent(a.name + ' music');
   return { url: `https://www.youtube.com/results?search_query=${q}`, type: 'yt', label: 'Search YouTube' };
