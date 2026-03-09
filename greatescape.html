@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Great Escape 2026 — Artist Discovery Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131c;
+    --card: #1a1a28;
+    --accent: #e8ff3e;
+    --accent2: #ff4fd8;
+    --accent3: #3effcb;
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --border: #2a2a3e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 60px 40px 50px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,255,62,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 20%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,79,216,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 80px);
+    line-height: 1;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hero-meta-item .label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero-meta-item .value {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent3);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0f;
+    border: none;
+    padding: 12px 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: #fff; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 12px 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { background: rgba(232,255,62,0.1); }
+
+  /* CONTROLS */
+  .controls {
+    padding: 24px 40px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 360px;
+  }
+
+  .search-wrap::before {
+    content: '⌕';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 12px 10px 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  .count-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .count-badge span {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* GENRE TABS */
+  .genre-nav {
+    padding: 20px 40px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .genre-tab {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .genre-tab:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .genre-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0a0a0f;
+    font-weight: 700;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    padding: 32px 40px;
+  }
+
+  /* GENRE SECTION */
+  .genre-section {
+    margin-bottom: 48px;
+  }
+
+  .genre-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .genre-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+  }
+
+  .genre-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .genre-count {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-left: auto;
+  }
+
+  /* SUBGENRE GROUPING */
+  .subgenre-group {
+    margin-bottom: 28px;
+  }
+
+  .subgenre-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0 10px;
+    margin-bottom: 0;
+  }
+
+  .subgenre-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .subgenre-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .subgenre-count {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    opacity: 0.5;
+  }
+
+  /* ARTIST GRID */
+  .artist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .artist-card {
+    background: var(--card);
+    padding: 20px;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .artist-card:hover {
+    background: #1e1e30;
+  }
+
+  .artist-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--dot-color, var(--accent));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .artist-card:hover::before { opacity: 1; }
+
+  .artist-name {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .artist-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .tag-subgenre {
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .tag-country {
+    background: rgba(62,255,203,0.08);
+    color: var(--accent3);
+    border: 1px solid rgba(62,255,203,0.2);
+  }
+
+  .tag-spotlight {
+    background: rgba(232,255,62,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(232,255,62,0.3);
+  }
+
+  .artist-notes {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .artist-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .artist-link {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    transition: all 0.15s;
+  }
+
+  .artist-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .artist-link.spotify { color: #1db954; border-color: rgba(29,185,84,0.3); }
+  .artist-link.spotify:hover { background: rgba(29,185,84,0.1); }
+  .artist-link.instagram { color: var(--accent2); border-color: rgba(255,79,216,0.3); }
+  .artist-link.instagram:hover { background: rgba(255,79,216,0.1); }
+
+  /* PLAY BUTTON */
+  .play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    padding: 7px 14px 7px 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: 10px;
+  }
+
+  .play-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.3);
+    transform: scale(1.02);
+  }
+
+  .play-btn.yt { border-color: rgba(255,0,0,0.35); color: #ff4444; }
+  .play-btn.yt:hover { background: rgba(255,0,0,0.1); border-color: #ff4444; }
+  .play-btn.sp { border-color: rgba(29,185,84,0.35); color: #1db954; }
+  .play-btn.sp:hover { background: rgba(29,185,84,0.1); border-color: #1db954; }
+
+  .play-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .play-btn.yt .play-icon { background: rgba(255,0,0,0.2); }
+  .play-btn.sp .play-icon { background: rgba(29,185,84,0.2); }
+
+  .play-icon svg { width: 10px; height: 10px; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 80px 40px;
+    color: var(--muted);
+  }
+
+  .empty-state .big {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 32px 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .footer-note {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .footer-note a { color: var(--accent3); text-decoration: none; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  @media (max-width: 640px) {
+    .hero, .controls, .genre-nav, .main, .footer { padding-left: 20px; padding-right: 20px; }
+    .hero h1 { font-size: 32px; }
+    .artist-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eyebrow">Brighton, UK · May 13–16, 2026</div>
+  <h1>The Great<span>Escape 2026</span></h1>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="label">Artists</span>
+      <span class="value" id="total-count">150+</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">Venues</span>
+      <span class="value">35+</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">Days</span>
+      <span class="value">4</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">Edition</span>
+      <span class="value">20th</span>
+    </div>
+  </div>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="downloadCSV()">⬇ Download CSV</button>
+    <a class="btn-secondary" href="https://greatescapefestival.com/buy-festival-tickets/" target="_blank">Buy Tickets →</a>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="search" placeholder="Search artists, genres, countries..." oninput="filterArtists()">
+  </div>
+  <div class="count-badge">Showing <span id="visible-count">0</span> artists</div>
+</div>
+
+<nav class="genre-nav" id="genre-nav">
+  <button class="genre-tab active" onclick="filterGenre('all', this)">All Genres</button>
+</nav>
+
+<main class="main" id="main-content">
+  <div id="empty-state" class="empty-state hidden">
+    <div class="big">◯</div>
+    <p>No artists match your search.</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-note">
+    Data sourced from official announcements as of March 2026. The full 450+ artist lineup is still being revealed — check <a href="https://greatescapefestival.com/line-up/" target="_blank">greatescapefestival.com</a> for updates. Links open in new tab. CSV includes all listed artists with available metadata.
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// HELPERS — build play URL (YouTube search or Spotify artist page)
+// ============================================================
+function playURL(a) {
+  if (a.spotifyArtist) return { url: `https://open.spotify.com/artist/${a.spotifyArtist}`, type: 'sp', label: 'Play on Spotify' };
+  if (a.youtube) return { url: a.youtube, type: 'yt', label: 'Watch on YouTube' };
+  // fallback: YouTube search
+  const q = encodeURIComponent(a.name + ' music');
+  return { url: `https://www.youtube.com/results?search_query=${q}`, type: 'yt', label: 'Search YouTube' };
+}
+
+// ============================================================
+// ARTIST DATA — compiled from official TGE 2026 announcements
+// ============================================================
+const artists = [
+  // SPOTLIGHT SHOWS
+  { name:"The Kooks", genre:"Spotlight Show", subgenre:"Indie Rock", country:"UK", website:"https://thekooks.com", spotifyArtist:"6GI52t8N5F02MxU0g5U69P", instagram:"https://www.instagram.com/thekooks/", notes:"20th Anniversary Spotlight Show, TGE Beach, May 13. Brighton-formed indie icons who played the very first Great Escape in 2006." },
+  { name:"Kingfishr", genre:"Spotlight Show", subgenre:"Indie Folk", country:"Ireland", website:"https://www.kingfishr.ie/", spotifyArtist:"3uHh8ZHFNlBYvqU67WGS6N", youtube:"https://www.youtube.com/watch?v=Xv3ljc-Wh-Q", instagram:"https://www.instagram.com/kingfishr/", notes:"Spotlight Show, Brighton Dome, May 14. Limerick trio whose hit 'Killeagh' went 4x platinum in Ireland." },
+  { name:"Peaches", genre:"Spotlight Show", subgenre:"Electronic / Art Pop", country:"Canada/Germany", website:"https://www.peachesrocks.com/", spotifyArtist:"4bdryOUFKAfMBBVy1O4VYi", youtube:"https://www.youtube.com/watch?v=0wl7smcDuMU", instagram:"https://www.instagram.com/peachesrocks/", notes:"Spotlight Show. Iconic electro-punk provocateur and artist." },
+
+  // ALTERNATIVE & INDIE
+  { name:"Adult DVD", genre:"Alternative & Indie", subgenre:"Alt-Indie", country:"UK", website:"https://www.instagram.com/adultdvdband/", youtube:"https://www.youtube.com/results?search_query=Adult+DVD+band+music", instagram:"https://www.instagram.com/adultdvdband/", notes:"UK alt-indie six-piece, raucous party-starters." },
+  { name:"Ain't", genre:"Alternative & Indie", subgenre:"Alt Rock", country:"UK", website:"https://lnk.to/aint-jude", youtube:"https://www.youtube.com/results?search_query=Ain%27t+band+music+indie", instagram:"", notes:"Channels the stranger side of 90s guitar music from both sides of the Atlantic." },
+  { name:"Ally Nicholas", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Ally+Nicholas+music", instagram:"", notes:"Rising indie talent." },
+  { name:"Ana De Llor", genre:"Alternative & Indie", subgenre:"Indie", country:"Spain", website:"", youtube:"https://www.youtube.com/results?search_query=Ana+De+Llor+music", instagram:"", notes:"" },
+  { name:"Angine de Poitrine", genre:"Alternative & Indie", subgenre:"Math Rock", country:"Canada", website:"", youtube:"https://www.youtube.com/results?search_query=Angine+de+Poitrine+music", instagram:"", notes:"Experimental math-rock duo from Quebec." },
+  { name:"Atomic Lobster", genre:"Alternative & Indie", subgenre:"Alt Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Atomic+Lobster+band", instagram:"", notes:"" },
+  { name:"Bean Magazine", genre:"Alternative & Indie", subgenre:"Indie Rock", country:"UK", website:"https://www.facebook.com/BeanMagazine.Band/", youtube:"https://www.youtube.com/results?search_query=Bean+Magazine+band+music", instagram:"", notes:"Pixies-style snap with the melodic sensitivity of songwriter rock." },
+  { name:"Benchwarmer", genre:"Alternative & Indie", subgenre:"Alt Rock / Shoegaze", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Benchwarmer+band+shoegaze", instagram:"", notes:"Alt rock shoegaze five-piece from London." },
+  { name:"big long sun", genre:"Alternative & Indie", subgenre:"Art Rock", country:"UK", website:"https://www.instagram.com/biglongsunband", youtube:"https://www.youtube.com/results?search_query=big+long+sun+band+music", instagram:"https://www.instagram.com/biglongsunband", notes:"Frenzied 8-piece Brighton-based. Words-as-percussion, crooked grooves, spearheaded by poet/filmmaker Jamie Broughton." },
+  { name:"Bitterfly", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Bitterfly+band+music", instagram:"", notes:"" },
+  { name:"Chanpan", genre:"Alternative & Indie", subgenre:"Alt-Indie", country:"USA", website:"", youtube:"https://www.youtube.com/results?search_query=Chanpan+band+music", instagram:"", notes:"New York trio bringing indie innovation." },
+  { name:"Ciao Lucifer", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Ciao+Lucifer+band", instagram:"", notes:"" },
+  { name:"Cusp", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Cusp+band+indie+music", instagram:"", notes:"" },
+  { name:"Dead Dads Club", genre:"Alternative & Indie", subgenre:"Post-Punk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Dead+Dads+Club+band+music", instagram:"", notes:"London alt-indie outfit led by ex-Palma Violets frontman Chilli Jesson." },
+  { name:"Dea Matrona", genre:"Alternative & Indie", subgenre:"Rock", country:"Ireland", website:"", youtube:"https://www.youtube.com/results?search_query=Dea+Matrona+music", instagram:"", notes:"Irish rock duo with guitar-driven energy." },
+  { name:"dogworld", genre:"Alternative & Indie", subgenre:"Post-Punk", country:"Australia", website:"", youtube:"https://www.youtube.com/results?search_query=dogworld+band+Australia", instagram:"", notes:"Australian post-punk four-piece pushing genre boundaries." },
+  { name:"East Exchange", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=East+Exchange+band+music", instagram:"", notes:"" },
+  { name:"Fellatio", genre:"Alternative & Indie", subgenre:"Indie Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Fellatio+band+indie+rock", instagram:"", notes:"" },
+  { name:"Fez", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Fez+band+indie+music+UK", instagram:"", notes:"" },
+  { name:"Fool Nelson", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Fool+Nelson+music", instagram:"", notes:"" },
+  { name:"Girl Group", genre:"Alternative & Indie", subgenre:"Pop / R&B", country:"UK", website:"https://bio.to/GirlGroup", youtube:"https://www.youtube.com/results?search_query=Girl+Group+UK+band+music", instagram:"", notes:"A divine feminine moment in pop culture: riot grrrl to R&B trio to dancing quintet." },
+  { name:"Girl In The Year Above", genre:"Alternative & Indie", subgenre:"Indie", country:"Ireland/UK", website:"", youtube:"https://www.youtube.com/results?search_query=Girl+In+The+Year+Above+band", instagram:"", notes:"Irish/Cornish five-piece supporting The Kooks at Spotlight Show." },
+  { name:"Glasshouse Red Spider Mite", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Glasshouse+Red+Spider+Mite+band", instagram:"", notes:"" },
+  { name:"Goodbye", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Goodbye+band+indie+UK", instagram:"", notes:"" },
+  { name:"Half Happy", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Half+Happy+band+music", instagram:"", notes:"" },
+  { name:"Hamish", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Hamish+indie+artist+UK", instagram:"", notes:"" },
+  { name:"Headsend", genre:"Alternative & Indie", subgenre:"Alt Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=HEADSEND+band+music", instagram:"", notes:"90s alt-rock trio." },
+  { name:"Henry Coke", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Henry+Coke+music", instagram:"", notes:"" },
+  { name:"Jackson Roy", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Jackson+Roy+music+indie", instagram:"", notes:"" },
+  { name:"Julia Cumming", genre:"Alternative & Indie", subgenre:"Alt-Indie", country:"USA", website:"", youtube:"https://www.youtube.com/results?search_query=Julia+Cumming+Sunflower+Bean+solo", instagram:"", notes:"Brooklyn alt-indie frontwoman of Sunflower Bean, performing solo." },
+  { name:"Leao", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Leao+band+music+UK", instagram:"", notes:"" },
+  { name:"Legss", genre:"Alternative & Indie", subgenre:"Post-Punk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Legss+band+post+punk", instagram:"", notes:"" },
+  { name:"Lemonsuckr", genre:"Alternative & Indie", subgenre:"Indie Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Lemonsuckr+band+music", instagram:"", notes:"" },
+  { name:"Lisl", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Lisl+artist+music", instagram:"", notes:"" },
+  { name:"Luca George", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Luca+George+music+indie", instagram:"", notes:"" },
+  { name:"Lucia & The Best Boys", genre:"Alternative & Indie", subgenre:"Indie Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Lucia+%26+The+Best+Boys+music", instagram:"", notes:"" },
+  { name:"Luxjury", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Luxjury+band+music", instagram:"", notes:"" },
+  { name:"Maddie Ashman", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Maddie+Ashman+music", instagram:"", notes:"" },
+  { name:"Marsy", genre:"Alternative & Indie", subgenre:"Indie Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Marsy+band+music+London", instagram:"", notes:"Melodic London five-piece." },
+  { name:"Maximilian", genre:"Alternative & Indie", subgenre:"Indie", country:"Germany", website:"", youtube:"https://www.youtube.com/results?search_query=Maximilian+indie+artist+music", instagram:"", notes:"" },
+  { name:"Mitch Santiago", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Mitch+Santiago+music", instagram:"", notes:"" },
+  { name:"Muroki", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Muroki+band+music", instagram:"", notes:"" },
+  { name:"MustBeJohn", genre:"Alternative & Indie", subgenre:"Indie Alt", country:"UK", website:"http://mustbejohn.com/", spotifyArtist:"3ApHTmcL8bBnMm4hVWXiOu", youtube:"https://www.youtube.com/results?search_query=mustbejohn+music", instagram:"", notes:"Boundary-pushing UK artist blending city life storytelling. Influenced by The Streets, Gorillaz, Arctic Monkeys." },
+  { name:"My Precious Bunny", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=My+Precious+Bunny+band", instagram:"", notes:"" },
+  { name:"Opal Mag", genre:"Alternative & Indie", subgenre:"Alt Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Opal+Mag+music", instagram:"", notes:"" },
+  { name:"Pigeon", genre:"Alternative & Indie", subgenre:"Afro Synth-Funk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Pigeon+band+Margate+afro+synth", instagram:"", notes:"Margate Afro synth-funk five-piece." },
+  { name:"Pixie McCann", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Pixie+McCann+music", instagram:"", notes:"" },
+  { name:"Power Plush", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Power+Plush+band+music", instagram:"", notes:"" },
+  { name:"Really Good Time", genre:"Alternative & Indie", subgenre:"Post-Punk / Desert Rock", country:"Ireland", website:"https://www.facebook.com/reallygoodtimeband/", youtube:"https://www.youtube.com/results?search_query=Really+Good+Time+band+Dublin", instagram:"", notes:"Dublin power trio blending desert rock rawness with post-punk urgency and electro build-and-drop." },
+  { name:"Reece Bibby", genre:"Alternative & Indie", subgenre:"Indie Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Reece+Bibby+music", instagram:"", notes:"" },
+  { name:"Ringlets", genre:"Alternative & Indie", subgenre:"Post-Punk", country:"New Zealand", website:"https://ringlets.co.nz/", youtube:"https://www.youtube.com/results?search_query=Ringlets+band+New+Zealand+post+punk", instagram:"", notes:"Post-punk quartet from Aotearoa with sharp wit, grit, and sonic technicality." },
+  { name:"Saint Clair", genre:"Alternative & Indie", subgenre:"Shoegaze / Alt Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Saint+Clair+band+shoegaze+London", instagram:"", notes:"London four-piece blurring shoegaze and alt-rock. Moody guitars, introspective lyrics." },
+  { name:"Shaking Hand", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Shaking+Hand+band+music", instagram:"", notes:"" },
+  { name:"Shtëpi", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Shtëpi+band+music", instagram:"", notes:"" },
+  { name:"SLAG", genre:"Alternative & Indie", subgenre:"Alt Rock", country:"UK", website:"https://linktr.ee/slag.band", youtube:"https://www.youtube.com/results?search_query=SLAG+band+music+UK", instagram:"", notes:"Known for awesome live shows." },
+  { name:"Spacestation", genre:"Alternative & Indie", subgenre:"Indie Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Spacestation+band+indie+rock", instagram:"", notes:"" },
+  { name:"Spiral Drive", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Spiral+Drive+band+music", instagram:"", notes:"" },
+  { name:"Steel.", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Steel.+band+indie+music", instagram:"", notes:"" },
+  { name:"Suzan Köcher's Suprafon", genre:"Alternative & Indie", subgenre:"Indie / Experimental", country:"Switzerland", website:"", youtube:"https://www.youtube.com/results?search_query=Suzan+K%C3%B6cher+Suprafon", instagram:"", notes:"" },
+  { name:"The Cases", genre:"Alternative & Indie", subgenre:"Indie Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=The+Cases+band+indie+rock", instagram:"", notes:"" },
+  { name:"The Itch", genre:"Alternative & Indie", subgenre:"New Romantic / Rave Pop", country:"UK", website:"https://theitchyouscratch.com/", youtube:"https://www.youtube.com/results?search_query=The+Itch+band+music+UK", instagram:"", notes:"Pairing dancefloor fillers and disenchanted pop; tessellating New Romantic and rave influences. Word-of-mouth buzz." },
+  { name:"The North", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=The+North+band+indie+music", instagram:"", notes:"" },
+  { name:"The Orielles", genre:"Alternative & Indie", subgenre:"Indie Rock", country:"UK", website:"", spotifyArtist:"6Yf9IHGaR0VqDfL9FqQHZS", youtube:"https://www.youtube.com/results?search_query=The+Orielles+band+music", instagram:"", notes:"Halifax rock trio." },
+  { name:"The Slow Country", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=The+Slow+Country+band+music", instagram:"", notes:"" },
+  { name:"Tom A Smith", genre:"Alternative & Indie", subgenre:"Indie Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Tom+A+Smith+music+Sunderland", instagram:"", notes:"Rising Sunderland singer-songwriter with anthemic indie rock and sharp lyricism." },
+  { name:"Trampolene", genre:"Alternative & Indie", subgenre:"Indie Punk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Trampolene+band+Wales+music", instagram:"", notes:"Welsh indie-punks." },
+  { name:"Ugly Ozo", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Ugly+Ozo+band", instagram:"", notes:"" },
+  { name:"Vera Ellen", genre:"Alternative & Indie", subgenre:"Indie", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Vera+Ellen+artist+indie", instagram:"", notes:"" },
+  { name:"Weston Loney", genre:"Alternative & Indie", subgenre:"Indie", country:"USA", website:"", youtube:"https://www.youtube.com/results?search_query=Weston+Loney+music", instagram:"", notes:"" },
+  { name:"Why Horses?", genre:"Alternative & Indie", subgenre:"Post-Punk / Disco", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Why+Horses+band+Cardiff", instagram:"", notes:"Cardiff post-punk/disco five-piece." },
+  { name:"Westside Cowboy", genre:"Alternative & Indie", subgenre:"Britainicana", country:"UK", website:"https://www.instagram.com/westsidecowboyyy/", youtube:"https://www.youtube.com/results?search_query=Westside+Cowboy+band+Manchester+music", instagram:"https://www.instagram.com/westsidecowboyyy/", notes:"Manchester four-piece. Won Glastonbury 2025 Emerging Talent Competition. Folk-rock 'Britainicana' with four-part harmonies." },
+  { name:"Yumi and the Weather", genre:"Alternative & Indie", subgenre:"Indie Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Yumi+and+the+Weather+music", instagram:"", notes:"" },
+
+  // ELECTRONIC & DANCE
+  { name:"Annie-Dog", genre:"Electronic & Dance", subgenre:"Electro Pop", country:"Ireland", website:"https://www.instagram.com/anniedogmusic/", youtube:"https://www.youtube.com/results?search_query=Annie-Dog+music", instagram:"https://www.instagram.com/anniedogmusic/", notes:"Self-produced shapeshifting pop. Influences include Grimes and PinkPantheress." },
+  { name:"Au/Ra", genre:"Electronic & Dance", subgenre:"Dark Pop", country:"Germany/UK", website:"https://www.heyitsaura.com/", spotifyArtist:"2mUxFGsVFB4BFoliYI4sHa", youtube:"https://www.youtube.com/watch?v=HwEbpRRKWkw", instagram:"", notes:"Powerful genre-blending sound; dark themes meet atmospheric production." },
+  { name:"BED", genre:"Electronic & Dance", subgenre:"Rave Rock", country:"Japan", website:"https://www.instagram.com/bedsleepwell/", youtube:"https://www.youtube.com/results?search_query=BED+band+Tokyo+rave+rock", instagram:"https://www.instagram.com/bedsleepwell/", notes:"Tokyo-based rave rock fusing punk, electronic and techno. High-energy live performances with DIY ethos." },
+  { name:"Bug Teeth", genre:"Electronic & Dance", subgenre:"Electronic", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Bug+Teeth+band+music", instagram:"", notes:"" },
+  { name:"Carpetman", genre:"Electronic & Dance", subgenre:"Experimental Electronic", country:"Ukraine", website:"", youtube:"https://www.youtube.com/results?search_query=Carpetman+Ukraine+music", instagram:"", notes:"Mysterious Ukrainian newcomer, highly genre-shifting." },
+  { name:"Greta Svabo Bech", genre:"Electronic & Dance", subgenre:"Electronic Pop", country:"Faroe Islands", website:"", youtube:"https://www.youtube.com/results?search_query=Greta+Svabo+Bech+music", instagram:"", notes:"" },
+  { name:"Ibsxjaur", genre:"Electronic & Dance", subgenre:"Electronic", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Ibsxjaur+music", instagram:"", notes:"" },
+  { name:"Jessie Mac", genre:"Electronic & Dance", subgenre:"Electronic", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Jessie+Mac+music+electronic", instagram:"", notes:"" },
+  { name:"La Sécurité", genre:"Electronic & Dance", subgenre:"Synth Pop", country:"Canada", website:"", youtube:"https://www.youtube.com/results?search_query=La+S%C3%A9curit%C3%A9+band+music", instagram:"", notes:"" },
+  { name:"Leila Shii", genre:"Electronic & Dance", subgenre:"Electronic", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Leila+Shii+music", instagram:"", notes:"" },
+  { name:"Sistra", genre:"Electronic & Dance", subgenre:"Emotional Electronic", country:"UK", website:"https://sistraofficial.com/", youtube:"https://www.youtube.com/results?search_query=Sistra+band+electronic+music", instagram:"", notes:"London-based sister duo making emotional electronic music — writing songs for each other, saying what the other can't." },
+  { name:"Taiga", genre:"Electronic & Dance", subgenre:"Electronic", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Taiga+artist+electronic+music", instagram:"", notes:"" },
+  { name:"Tanzana", genre:"Electronic & Dance", subgenre:"Trip-Hop / Alt Rock", country:"UK", website:"https://www.facebook.com/TanzanaGlasgow", youtube:"https://www.youtube.com/results?search_query=Tanzana+Glasgow+band+music", instagram:"", notes:"Glasgow five-piece creating trip-hop influenced alternative rock." },
+  { name:"Wah Wah Wah", genre:"Electronic & Dance", subgenre:"Psychedelic Rock", country:"South Korea", website:"https://www.alpsinc.kr/wahwahwah", youtube:"https://www.youtube.com/results?search_query=Wah+Wah+Wah+Korea+psychedelic+rock", instagram:"", notes:"Psychedelic rock combining garage rock rawness with progressive rock elements." },
+  { name:"Yndling", genre:"Electronic & Dance", subgenre:"Dream Pop / Shoegaze", country:"Norway", website:"https://www.yndling.news/", youtube:"https://www.youtube.com/results?search_query=Yndling+artist+Norway+dream+pop", instagram:"", notes:"Norwegian project by Silje Espevik. Heavy guitars over big synthscapes. Dream pop meets trip-hop; evokes Cocteau Twins, Portishead." },
+
+  // FOLK, AMERICANA & COUNTRY
+  { name:"Clothesline from Hell", genre:"Folk, Americana & Country", subgenre:"Folk / Experimental", country:"Canada", website:"https://clotheslinefromhell.lnk.to/onice", youtube:"https://www.youtube.com/results?search_query=Clothesline+from+Hell+music", instagram:"", notes:"Toronto songwriter. Acoustic guitar with programmed drums and samples. Imaginative and colourful." },
+  { name:"Dermot Henry", genre:"Folk, Americana & Country", subgenre:"Alt Folk", country:"Ireland", website:"https://dermothenry.os.fan/demos", youtube:"https://www.youtube.com/results?search_query=Dermot+Henry+music+folk", instagram:"", notes:"After supporting Kingfishr across Europe, emerging as a distinctive voice in UK alternative folk." },
+  { name:"Essy Sparrow", genre:"Folk, Americana & Country", subgenre:"Folk Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Essy+Sparrow+music", instagram:"", notes:"" },
+  { name:"Family Stereo", genre:"Folk, Americana & Country", subgenre:"Folk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Family+Stereo+band+folk", instagram:"", notes:"" },
+  { name:"Gareth", genre:"Folk, Americana & Country", subgenre:"Country Folk", country:"Ireland", website:"https://www.garethofficial.com/", youtube:"https://www.youtube.com/results?search_query=Gareth+country+folk+Ireland+music", instagram:"", notes:"Seamlessly blends traditional Country with Irish Folk." },
+  { name:"Isak Benjamin", genre:"Folk, Americana & Country", subgenre:"Folk Pop", country:"Sweden", website:"https://www.isakbenjamin.com/", youtube:"https://www.youtube.com/results?search_query=Isak+Benjamin+music", instagram:"", notes:"Stockholm native. Grew up in studios with sisters Johanna and Klara — better known as First Aid Kit." },
+  { name:"Jack Devlin", genre:"Folk, Americana & Country", subgenre:"Singer-Songwriter", country:"UK", website:"https://www.facebook.com/jackdevlinmusic/", youtube:"https://www.youtube.com/results?search_query=Jack+Devlin+music+singer+songwriter", instagram:"", notes:"Northern Irish singer-songwriter known for emotive lyrics and evocative storytelling." },
+  { name:"Ladylike", genre:"Folk, Americana & Country", subgenre:"Folk / Post-Rock", country:"UK", website:"https://www.facebook.com/share/1MYnovuwRG/", youtube:"https://www.youtube.com/results?search_query=Ladylike+band+Brighton+folk", instagram:"", notes:"Brighton duo inhabiting a quiet, candlelit sound. Treading the tightrope between folk and post-rock." },
+  { name:"Little Grandad", genre:"Folk, Americana & Country", subgenre:"Americana / Alt-Country", country:"UK", website:"https://www.instagram.com/littlegrandad_/", youtube:"https://www.youtube.com/results?search_query=Little+Grandad+music+americana", instagram:"https://www.instagram.com/littlegrandad_/", notes:"Americana-indie with four-part harmonies, brass bursts. Shades of The Band and 90s alt-country." },
+  { name:"Madra Salach", genre:"Folk, Americana & Country", subgenre:"Experimental Folk", country:"Ireland", website:"https://www.instagram.com/madrasalach_", youtube:"https://www.youtube.com/results?search_query=Madra+Salach+music+Ireland", instagram:"https://www.instagram.com/madrasalach_", notes:"Experimental Irish folk with electronic elements. Strikingly modern yet timeless." },
+  { name:"Marlon Funaki", genre:"Folk, Americana & Country", subgenre:"Alt Rock / Psych", country:"USA", website:"https://www.marlonfunaki.com/", youtube:"https://www.youtube.com/results?search_query=Marlon+Funaki+music", instagram:"", notes:"24-year-old from California. Alt rock, psychedelic textures, jazz-influenced guitar work." },
+  { name:"Meltt", genre:"Folk, Americana & Country", subgenre:"Psych Rock / Shoegaze", country:"Canada", website:"https://www.meltt.ca/", youtube:"https://www.youtube.com/results?search_query=Meltt+band+music+Vancouver", instagram:"", notes:"Vancouver psych-rockers. Distorted guitars dissolving into bright melodies with shimmering synths." },
+  { name:"Morn", genre:"Folk, Americana & Country", subgenre:"Post-Rock", country:"UK", website:"https://mornbandinfo.wixsite.com/morn", youtube:"https://www.youtube.com/results?search_query=Morn+band+music+UK", instagram:"", notes:"Two sets of siblings. 'Doom over beautiful chords' — soul-baring vocals over cathartic energy." },
+  { name:"Sean Trelford", genre:"Folk, Americana & Country", subgenre:"Singer-Songwriter", country:"UK", website:"https://www.seantrelford.com/", youtube:"https://www.youtube.com/results?search_query=Sean+Trelford+music", instagram:"", notes:"Writes, performs, records, produces and designs artwork. Crafting an entire world for the audience." },
+  { name:"Tim Baker", genre:"Folk, Americana & Country", subgenre:"Folk Rock", country:"Canada", website:"", youtube:"https://www.youtube.com/results?search_query=Tim+Baker+folk+rock+music", instagram:"", notes:"" },
+  { name:"Tommy WÁ", genre:"Folk, Americana & Country", subgenre:"Cinematic Folk", country:"Nigeria/Ghana", website:"https://www.tommywa.com/", youtube:"https://www.youtube.com/results?search_query=Tommy+W%C3%81+music", instagram:"", notes:"One of the most special new voices. African folk roots meet cinematic beauty evoking Bon Iver and Michael Kiwanuka." },
+  { name:"Tygermylk", genre:"Folk, Americana & Country", subgenre:"Folk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Tygermylk+music", instagram:"", notes:"" },
+
+  // GRIME, RAP & HIP-HOP
+  { name:"Bella Barbe", genre:"Grime, Rap & Hip-Hop", subgenre:"Hip-Hop / Soul", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Bella+Barbe+music+London", instagram:"", notes:"London soulful hip-hop artist." },
+  { name:"Boutique Feelings", genre:"Grime, Rap & Hip-Hop", subgenre:"Rap", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Boutique+Feelings+music", instagram:"", notes:"" },
+  { name:"DC3", genre:"Grime, Rap & Hip-Hop", subgenre:"Gospel Rap / Jazz Hip-Hop", country:"UK", website:"https://www.facebook.com/people/Dc3media/61580911173033/", youtube:"https://www.youtube.com/results?search_query=DC3+gospel+rap+hip-hop+UK", instagram:"", notes:"18-year-old mixing gospel, hip-hop and jazz. Faith-driven, authentic storytelling." },
+  { name:"Joker Starr", genre:"Grime, Rap & Hip-Hop", subgenre:"Grime", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Joker+Starr+grime+music", instagram:"", notes:"" },
+  { name:"Marius DC", genre:"Grime, Rap & Hip-Hop", subgenre:"Rap", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Marius+DC+music+rap", instagram:"", notes:"" },
+  { name:"Meduulla Sorvina", genre:"Grime, Rap & Hip-Hop", subgenre:"Rap", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Meduulla+Sorvina+music", instagram:"", notes:"" },
+  { name:"Sophia Thakur", genre:"Grime, Rap & Hip-Hop", subgenre:"Spoken Word / Poetry", country:"UK", website:"https://www.instagram.com/sophiathakur/", youtube:"https://www.youtube.com/results?search_query=Sophia+Thakur+spoken+word", instagram:"https://www.instagram.com/sophiathakur/", notes:"BBC's 'Poet of this Generation'. Vogue's one of the most adored poets. Generational storyteller." },
+  { name:"Tony Bontana", genre:"Grime, Rap & Hip-Hop", subgenre:"Grime / Rap", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Tony+Bontana+music+Birmingham", instagram:"", notes:"Birmingham rapper-producer adding grime and rap firepower." },
+  { name:"Who Shot Scott", genre:"Grime, Rap & Hip-Hop", subgenre:"Hip-Hop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Who+Shot+Scott+music+hip-hop", instagram:"", notes:"" },
+
+  // JAZZ, R&B & SOUL
+  { name:"Ashaine White", genre:"Jazz, R&B & Soul", subgenre:"Alt R&B", country:"UK", website:"https://www.ashainewhite.com/", youtube:"https://www.youtube.com/results?search_query=Ashaine+White+music", instagram:"", notes:"Alternative in the purest sense. Connects people through free, authentic music." },
+  { name:"James Emmanuel", genre:"Jazz, R&B & Soul", subgenre:"Soul / Jazz", country:"UK/Uganda", website:"https://www.jamesemmanuel.co.uk/", youtube:"https://www.youtube.com/results?search_query=James+Emmanuel+music+soul", instagram:"", notes:"Edinburgh-based. Warm, soulful performances. Debut 'Lonesome Man' resonated far and wide." },
+  { name:"Jazz Cuti", genre:"Jazz, R&B & Soul", subgenre:"Jazz", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Jazz+Cuti+music", instagram:"", notes:"" },
+  { name:"JNR Williams", genre:"Jazz, R&B & Soul", subgenre:"R&B", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=JNR+Williams+music+R%26B", instagram:"", notes:"" },
+  { name:"Levitation Orchestra", genre:"Jazz, R&B & Soul", subgenre:"Jazz / Orchestral", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Levitation+Orchestra+music", instagram:"", notes:"" },
+  { name:"Lily Moore", genre:"Jazz, R&B & Soul", subgenre:"Soul / Blues", country:"UK", website:"https://www.facebook.com/lilymooremusic/", youtube:"https://www.youtube.com/results?search_query=Lily+Moore+music+soul", instagram:"", notes:"Raw, soulful storytelling that makes you feel every lyric. Sold out back-to-back London shows." },
+  { name:"Ngaiire", genre:"Jazz, R&B & Soul", subgenre:"Future Soul / Alt Pop", country:"Papua New Guinea/Australia", website:"https://www.ngaiire.com/", youtube:"https://www.youtube.com/results?search_query=Ngaiire+music", instagram:"", notes:"Papua New Guinean/Australian artist fusing electronic future-soul, gospel and alt-pop." },
+  { name:"Persia Holder", genre:"Jazz, R&B & Soul", subgenre:"Soul Pop", country:"UK", website:"https://www.instagram.com/persiaholder/", youtube:"https://www.youtube.com/results?search_query=Persia+Holder+music", instagram:"https://www.instagram.com/persiaholder/", notes:"Blend of emotional pop and soulful storytelling. Part of a new wave redefining British vulnerability." },
+  { name:"Tukki", genre:"Jazz, R&B & Soul", subgenre:"R&B / Afrobeats", country:"UK", website:"https://linktr.ee/Tukki", youtube:"https://www.youtube.com/results?search_query=Tukki+music+R%26B", instagram:"", notes:"London-born from Tottenham. Indonesian, Senegalese, French heritage. R&B meets afro sounds. Self-discovery and healing themes." },
+  { name:"Wesley Joseph", genre:"Jazz, R&B & Soul", subgenre:"R&B / Alt Soul", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Wesley+Joseph+music+R%26B", instagram:"", notes:"R&B polymath adding smooth, genre-blending grooves." },
+
+  // POP & SINGER-SONGWRITERS
+  { name:"Abbie Piper", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Abbie+Piper+music", instagram:"", notes:"" },
+  { name:"AK Patterson", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=AK+Patterson+music", instagram:"", notes:"" },
+  { name:"Argyle", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Argyle+band+pop+music+UK", instagram:"", notes:"" },
+  { name:"Ava Joe", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"https://avajoe.os.fan/", youtube:"https://www.youtube.com/results?search_query=Ava+Joe+music+singer", instagram:"", notes:"Singer-songwriter who cut her teeth in Kingston jam nights. Centre-stage performer." },
+  { name:"Becky Sikasa", genre:"Pop & Singer-Songwriters", subgenre:"Indie Pop", country:"UK/Scotland", website:"https://www.beckysikasa.com/", youtube:"https://www.youtube.com/results?search_query=Becky+Sikasa+music", instagram:"", notes:"Poetic lyrics on love, identity and transformation. Two releases shortlisted for Scottish Album of the Year." },
+  { name:"Blair Davie", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Blair+Davie+music", instagram:"", notes:"" },
+  { name:"Charli Lucas", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Charli+Lucas+music", instagram:"", notes:"" },
+  { name:"Dirty Blond", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Dirty+Blond+music+UK", instagram:"", notes:"" },
+  { name:"Elín Hall", genre:"Pop & Singer-Songwriters", subgenre:"Art Pop", country:"Iceland", website:"", youtube:"https://www.youtube.com/results?search_query=El%C3%ADn+Hall+music+Iceland", instagram:"", notes:"" },
+  { name:"Elsa", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"https://www.facebook.com/elsawav/", youtube:"https://www.youtube.com/results?search_query=Elsa+artist+music+UK+pop", instagram:"", notes:"Spotify Fresh Finds and BBC Featured Artist. One to watch." },
+  { name:"Heidi Curtis", genre:"Pop & Singer-Songwriters", subgenre:"Indie Folk Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Heidi+Curtis+music", instagram:"", notes:"Emotive indie folk singer-songwriter." },
+  { name:"Hope Winter", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Hope+Winter+music+singer", instagram:"", notes:"" },
+  { name:"Izzy Withers", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Izzy+Withers+music", instagram:"", notes:"" },
+  { name:"Jos Rivers", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Jos+Rivers+music", instagram:"", notes:"" },
+  { name:"Kellan Christopher Cragg", genre:"Pop & Singer-Songwriters", subgenre:"Alt Pop", country:"USA", website:"https://www.kellancraggmusic.com/", youtube:"https://www.youtube.com/results?search_query=Kellan+Christopher+Cragg+music", instagram:"", notes:"18-year-old Minneapolis multi-hyphenate. Writes, performs, produces and directs all his own work." },
+  { name:"Kilu", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"Germany", website:"", youtube:"https://www.youtube.com/results?search_query=Kilu+music+artist", instagram:"", notes:"" },
+  { name:"Lauren Auder", genre:"Pop & Singer-Songwriters", subgenre:"Art Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Lauren+Auder+music", instagram:"", notes:"London-based pop singer-songwriter." },
+  { name:"Lina-Mariah", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Lina-Mariah+music", instagram:"", notes:"" },
+  { name:"Luvis", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Luvis+music+UK+pop", instagram:"", notes:"" },
+  { name:"Matthew Ifield", genre:"Pop & Singer-Songwriters", subgenre:"Singer-Songwriter", country:"Australia", website:"", youtube:"https://www.youtube.com/results?search_query=Matthew+Ifield+music", instagram:"", notes:"Australian songwriter bringing global talent to the lineup." },
+  { name:"Max Baby", genre:"Pop & Singer-Songwriters", subgenre:"Lo-Fi / Art Pop", country:"France", website:"https://maxbaby.bfan.link/feet", youtube:"https://www.youtube.com/results?search_query=Max+Baby+music+France", instagram:"", notes:"French multi-instrumentalist who grew up near Bourges building drum kits from cookie tins. Self-taught, instinctive." },
+  { name:"Samira Hills", genre:"Pop & Singer-Songwriters", subgenre:"Pop", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Samira+Hills+music", instagram:"", notes:"" },
+  { name:"Tommy WÁ", genre:"Pop & Singer-Songwriters", subgenre:"Cinematic Folk", country:"Nigeria/Ghana", website:"https://www.tommywa.com/", youtube:"https://www.youtube.com/results?search_query=Tommy+W%C3%81+music", instagram:"", notes:"Nigerian-born, Ghana-based. African folk roots with cinematic beauty. Evoking Bon Iver and Michael Kiwanuka." },
+
+  // PUNK, ROCK & METAL
+  { name:"Arson", genre:"Punk, Rock & Metal", subgenre:"Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Arson+band+rock+UK", instagram:"", notes:"" },
+  { name:"Emnw", genre:"Punk, Rock & Metal", subgenre:"Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Emnw+band+music", instagram:"", notes:"" },
+  { name:"Eurotripp", genre:"Punk, Rock & Metal", subgenre:"Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Eurotripp+band+music", instagram:"", notes:"" },
+  { name:"Girl Tones", genre:"Punk, Rock & Metal", subgenre:"Rock", country:"USA", website:"https://www.girltones.com/", youtube:"https://www.youtube.com/results?search_query=Girl+Tones+band+rock+music", instagram:"", notes:"High-energy rock duo of two classically trained sisters. Cello to guitar, piano to drums." },
+  { name:"Hank", genre:"Punk, Rock & Metal", subgenre:"Punk Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Hank+band+punk+rock+UK", instagram:"", notes:"" },
+  { name:"Hetta", genre:"Punk, Rock & Metal", subgenre:"Metal / Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Hetta+band+metal+music", instagram:"", notes:"" },
+  { name:"Martial Arts", genre:"Punk, Rock & Metal", subgenre:"Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Martial+Arts+band+rock+UK", instagram:"", notes:"" },
+  { name:"Modern Guilt", genre:"Punk, Rock & Metal", subgenre:"Punk Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Modern+Guilt+band+music", instagram:"", notes:"" },
+  { name:"Necry Talkie", genre:"Punk, Rock & Metal", subgenre:"Punk Rock", country:"Japan", website:"", youtube:"https://www.youtube.com/results?search_query=Necry+Talkie+music+Japan", instagram:"", notes:"" },
+  { name:"Oversize", genre:"Punk, Rock & Metal", subgenre:"Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Oversize+band+rock+UK", instagram:"", notes:"" },
+  { name:"PISS", genre:"Punk, Rock & Metal", subgenre:"Noise Punk", country:"Canada", website:"https://www.instagram.com/piss_theband/", youtube:"https://www.youtube.com/results?search_query=PISS+band+Vancouver+punk", instagram:"https://www.instagram.com/piss_theband/", notes:"Noisy genre-bending 4-piece from Vancouver. Combines music, poetry, sound collage and performance art." },
+  { name:"Problem Patterns", genre:"Punk, Rock & Metal", subgenre:"Punk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Problem+Patterns+band+punk", instagram:"", notes:"" },
+  { name:"The Baby Seals", genre:"Punk, Rock & Metal", subgenre:"Punk Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=The+Baby+Seals+band+music", instagram:"", notes:"" },
+  { name:"The Gnomes", genre:"Punk, Rock & Metal", subgenre:"Rock", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=The+Gnomes+band+rock+UK", instagram:"", notes:"" },
+  { name:"The OBGMs", genre:"Punk, Rock & Metal", subgenre:"Punk Rock / Hip-Hop", country:"Canada", website:"https://theobgms.com/", youtube:"https://www.youtube.com/results?search_query=The+OBGMs+music", instagram:"", notes:"Fuse punk, rock, and hip-hop. Critically acclaimed for 'The Ends'. Toured with Alexisonfire and Billy Talent." },
+  { name:"Teenage Joans", genre:"Punk, Rock & Metal", subgenre:"Indie / Pop-Punk", country:"Australia", website:"https://www.facebook.com/teenagejoans/", youtube:"https://www.youtube.com/results?search_query=Teenage+Joans+music+Australia", instagram:"", notes:"Two-piece indie/pop-punk powerhouse. Beautifully crafted songs with immediate sing-along quality." },
+  { name:"Twat Union", genre:"Punk, Rock & Metal", subgenre:"Punk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Twat+Union+band+punk", instagram:"", notes:"" },
+  { name:"Yakkie", genre:"Punk, Rock & Metal", subgenre:"Punk", country:"UK", website:"", youtube:"https://www.youtube.com/results?search_query=Yakkie+band+punk+music", instagram:"", notes:"" },
+];
+
+// ============================================================
+// GENRE COLORS
+// ============================================================
+const genreColors = {
+  "Spotlight Show": "#e8ff3e",
+  "Alternative & Indie": "#3effcb",
+  "Electronic & Dance": "#ff4fd8",
+  "Folk, Americana & Country": "#ffab3e",
+  "Grime, Rap & Hip-Hop": "#ff6b6b",
+  "Jazz, R&B & Soul": "#b8a9ff",
+  "Pop & Singer-Songwriters": "#ff9ef5",
+  "Punk, Rock & Metal": "#ff5f3e",
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let activeGenre = 'all';
+let searchQuery = '';
+
+function getGenres() {
+  const genres = ['all'];
+  const seen = new Set();
+  artists.forEach(a => {
+    if (!seen.has(a.genre)) {
+      seen.add(a.genre);
+      genres.push(a.genre);
+    }
+  });
+  return genres;
+}
+
+function buildGenreTabs() {
+  const nav = document.getElementById('genre-nav');
+  const genres = getGenres();
+  nav.innerHTML = '';
+  genres.forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = 'genre-tab' + (g === 'all' ? ' active' : '');
+    btn.textContent = g === 'all' ? 'All Genres' : g;
+    btn.onclick = () => filterGenre(g, btn);
+    nav.appendChild(btn);
+  });
+}
+
+function filterGenre(genre, btn) {
+  activeGenre = genre;
+  document.querySelectorAll('.genre-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderArtists();
+}
+
+function filterArtists() {
+  searchQuery = document.getElementById('search').value.toLowerCase();
+  renderArtists();
+}
+
+function getVisibleArtists() {
+  return artists.filter(a => {
+    const matchesGenre = activeGenre === 'all' || a.genre === activeGenre;
+    const q = searchQuery;
+    const matchesSearch = !q || 
+      a.name.toLowerCase().includes(q) ||
+      a.genre.toLowerCase().includes(q) ||
+      a.subgenre.toLowerCase().includes(q) ||
+      a.country.toLowerCase().includes(q) ||
+      a.notes.toLowerCase().includes(q);
+    return matchesGenre && matchesSearch;
+  });
+}
+
+function groupByGenre(list) {
+  const groups = {};
+  list.forEach(a => {
+    if (!groups[a.genre]) groups[a.genre] = [];
+    groups[a.genre].push(a);
+  });
+  return groups;
+}
+
+function renderArtists() {
+  const main = document.getElementById('main-content');
+  const emptyState = document.getElementById('empty-state');
+  const visible = getVisibleArtists();
+  document.getElementById('visible-count').textContent = visible.length;
+
+  // Clear existing sections
+  const existing = main.querySelectorAll('.genre-section');
+  existing.forEach(e => e.remove());
+
+  if (visible.length === 0) {
+    emptyState.classList.remove('hidden');
+    return;
+  }
+  emptyState.classList.add('hidden');
+
+  const groups = groupByGenre(visible);
+  
+  Object.entries(groups).forEach(([genre, gArtists]) => {
+    const color = genreColors[genre] || '#e8ff3e';
+    const section = document.createElement('div');
+    section.className = 'genre-section';
+
+    const header = document.createElement('div');
+    header.className = 'genre-header';
+    header.innerHTML = `
+      <div class="genre-dot" style="background:${color}"></div>
+      <h2 class="genre-title">${genre}</h2>
+      <span class="genre-count">${gArtists.length} artist${gArtists.length !== 1 ? 's' : ''}</span>
+    `;
+    section.appendChild(header);
+
+    // Group by subgenre within this genre
+    const subgroups = {};
+    gArtists.forEach(a => {
+      const sg = a.subgenre || 'Other';
+      if (!subgroups[sg]) subgroups[sg] = [];
+      subgroups[sg].push(a);
+    });
+
+    // Sort subgroups alphabetically
+    const sortedSubgroups = Object.entries(subgroups).sort(([a], [b]) => a.localeCompare(b));
+
+    sortedSubgroups.forEach(([subgenre, sgArtists]) => {
+      const sgGroup = document.createElement('div');
+      sgGroup.className = 'subgenre-group';
+
+      const sgHeader = document.createElement('div');
+      sgHeader.className = 'subgenre-header';
+      sgHeader.innerHTML = `
+        <span class="subgenre-label">${subgenre}</span>
+        <span class="subgenre-line"></span>
+        <span class="subgenre-count">${sgArtists.length}</span>
+      `;
+      sgGroup.appendChild(sgHeader);
+
+      const grid = document.createElement('div');
+      grid.className = 'artist-grid';
+
+      sgArtists.forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'artist-card';
+        card.style.setProperty('--dot-color', color);
+
+        const isSpotlight = a.genre === 'Spotlight Show';
+
+        let tagsHTML = '';
+        if (a.country) tagsHTML += `<span class="tag tag-country">${a.country}</span>`;
+        if (isSpotlight) tagsHTML += `<span class="tag tag-spotlight">★ Spotlight</span>`;
+
+        // Play button
+        const play = playURL(a);
+        const playBtn = `<a href="${play.url}" target="_blank" class="play-btn ${play.type}" title="${play.label}">
+          <span class="play-icon">
+            <svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>
+          </span>
+          ${play.label}
+        </a>`;
+
+        let linksHTML = '';
+        if (a.website) linksHTML += `<a href="${a.website}" target="_blank" class="artist-link">Website</a>`;
+        if (a.spotifyArtist) linksHTML += `<a href="https://open.spotify.com/artist/${a.spotifyArtist}" target="_blank" class="artist-link spotify">Spotify</a>`;
+        if (a.instagram) linksHTML += `<a href="${a.instagram}" target="_blank" class="artist-link instagram">Instagram</a>`;
+
+        card.innerHTML = `
+          <div class="artist-name">${a.name}</div>
+          <div class="artist-meta">${tagsHTML}</div>
+          ${playBtn}
+          ${a.notes ? `<div class="artist-notes">${a.notes}</div>` : ''}
+          ${linksHTML ? `<div class="artist-links">${linksHTML}</div>` : ''}
+        `;
+
+        grid.appendChild(card);
+      });
+
+      sgGroup.appendChild(grid);
+      section.appendChild(sgGroup);
+    });
+
+    main.insertBefore(section, emptyState);
+  });
+}
+
+function downloadCSV() {
+  const headers = ['Artist Name','Genre','Sub-Genre','Country','Website','Spotify','YouTube','Instagram','Notes'];
+  const rows = artists.map(a => [
+    a.name, a.genre, a.subgenre, a.country, a.website || '',
+    a.spotifyArtist ? `https://open.spotify.com/artist/${a.spotifyArtist}` : '',
+    a.youtube || '',
+    a.instagram || '',
+    (a.notes || '').replace(/"/g, '""')
+  ].map(v => `"${v}"`).join(','));
+
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const el = document.createElement('a');
+  el.href = url;
+  el.download = 'great-escape-2026-artists.csv';
+  el.click();
+  URL.revokeObjectURL(url);
+}
+
+// INIT
+document.getElementById('total-count').textContent = artists.length + '+';
+buildGenreTabs();
+renderArtists();
+</script>
+</body>
+</html>
