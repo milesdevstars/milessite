@@ -585,7 +585,7 @@
   </div>
   <div class="hero-actions">
     <button class="btn-primary" onclick="downloadCSV()">⬇ Download CSV</button>
-    <a class="btn-secondary" href="https://greatescapefestival.com/" target="_blank">See Festival site →</a>
+    <a class="btn-secondary" href="https://greatescapefestival.com/buy-festival-tickets/" target="_blank">Buy Tickets →</a>
   </div>
 </header>
 
@@ -697,7 +697,7 @@ async function loadData() {
   const loadingEl = document.getElementById('loading-state');
   const errorEl   = document.getElementById('error-state');
   try {
-    const res = await fetch('great-escape-2026-artists.csv');
+    const res = await fetch('great-escape-2026-artists.csv?v=' + Date.now());
     if (!res.ok) throw new Error('Could not load CSV (HTTP ' + res.status + ')');
     const text = await res.text();
     const rows = parseCSV(text);
