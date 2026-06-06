@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canada Cycling — Summer 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f4ef;
+  --card: #ffffff;
+  --ink: #1a1814;
+  --ink2: #5c5850;
+  --ink3: #9c9890;
+  --rule: #e4e0d8;
+  --west: #1d4e89;
+  --west-l: #e8f0f9;
+  --west-m: #4a7fb5;
+  --east: #1a5c42;
+  --east-l: #e4f2eb;
+  --east-m: #3a8c62;
+  --ride: #e8f0f9;
+  --ride-t: #1d4e89;
+  --work: #e4f2eb;
+  --work-t: #1a5c42;
+  --depart: #f0ebe0;
+  --depart-t: #7a5c20;
+  --arrive: #fdf0e0;
+  --arrive-t: #9a5010;
+  --rest: #f0f0f0;
+  --rest-t: #505050;
+  --accent: #c84b2f;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+header {
+  background: var(--ink);
+  color: #fff;
+  padding: 3rem 2rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 40%;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 6px,
+    rgba(255,255,255,0.03) 6px,
+    rgba(255,255,255,0.03) 12px
+  );
+}
+.header-inner { max-width: 860px; margin: 0 auto; position: relative; }
+.header-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 1rem;
+}
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  letter-spacing: -.01em;
+}
+header h1 span { color: var(--accent); }
+.header-meta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.meta-item { font-size: 13px; color: rgba(255,255,255,.6); }
+.meta-item strong { color: #fff; font-weight: 500; display: block; font-size: 14px; }
+
+nav {
+  background: var(--card);
+  border-bottom: 1px solid var(--rule);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+}
+.nav-tab {
+  padding: 1rem 1.5rem;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink2);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2.5px solid transparent;
+  transition: color .2s, border-color .2s;
+  letter-spacing: .01em;
+}
+.nav-tab:hover { color: var(--ink); }
+.nav-tab.active-west { color: var(--west); border-bottom-color: var(--west); }
+.nav-tab.active-east { color: var(--east); border-bottom-color: var(--east); }
+
+main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.trip-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+.stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-lbl { font-size: 11px; color: var(--ink2); text-transform: uppercase; letter-spacing: .06em; }
+.west-val { color: var(--west); }
+.east-val { color: var(--east); }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 2rem;
+}
+.leg-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ink2);
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+.leg-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+.week-block { margin-bottom: 2rem; }
+.week-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.week-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  min-width: 48px;
+}
+.week-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.week-sub { font-size: 12px; color: var(--ink2); margin-left: auto; text-align: right; }
+
+.week-card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.west .week-card { border-top: 3px solid var(--west); }
+.east .week-card { border-top: 3px solid var(--east); }
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.day-col {
+  padding: 10px 8px;
+  border-right: 1px solid var(--rule);
+  text-align: center;
+}
+.day-col:last-child { border-right: none; }
+.day-name {
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+.day-pill {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 4px 4px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+.day-note { font-size: 9.5px; color: var(--ink2); line-height: 1.35; }
+
+.d-fly    { background: #fce8e4; color: #8b2510; }
+.d-ride   { background: var(--ride); color: var(--ride-t); }
+.d-work   { background: var(--work); color: var(--work-t); }
+.d-depart { background: var(--depart); color: var(--depart-t); }
+.d-arrive { background: var(--arrive); color: var(--arrive-t); }
+.d-rest   { background: var(--rest); color: var(--rest-t); }
+.d-finish { background: #fce8e4; color: #8b2510; }
+.d-celebrate { background: #f5f0ff; color: #4a2d8c; }
+
+.week-info {
+  padding: 12px 16px;
+  background: #fafaf8;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.info-row {
+  font-size: 11.5px;
+  color: var(--ink2);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.info-row::before { content: '→'; color: var(--ink3); flex-shrink: 0; margin-top: 1px; }
+.info-row.warn { color: #8b4010; }
+.info-row.warn::before { content: '!'; font-weight: 700; color: var(--accent); }
+.info-row.good::before { content: '✓'; color: var(--east-m); }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+.notes-section { margin-top: 2rem; }
+.notes-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--ink);
+}
+.notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.note-card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+.note-card h4 {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.note-card ul { padding-left: 1rem; }
+.note-card li { font-size: 12.5px; color: var(--ink2); margin-bottom: 4px; line-height: 1.4; }
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 11px;
+  color: var(--ink3);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .06em;
+}
+
+@media (max-width: 600px) {
+  main { padding: 1rem; }
+  header { padding: 2rem 1rem 1.5rem; }
+  .notes-grid { grid-template-columns: 1fr; }
+  .week-sub { display: none; }
+  .day-note { display: none; }
+  .nav-tab { padding: .75rem .9rem; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">Summer 2025 · 6 weeks · Two coasts</div>
+    <h1>Canada<br>Cycling<span>.</span></h1>
+    <div class="header-meta">
+      <div class="meta-item"><strong>Trip 1</strong>Calgary → Vancouver · Mid July</div>
+      <div class="meta-item"><strong>Trip 2</strong>Newfoundland Island · Mid August</div>
+      <div class="meta-item"><strong>Work rhythm</strong>Tue–Thu work · Fri depart · Mon arrive</div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <button class="nav-tab active-west" onclick="showPanel('west',this,'active-west')">West — Calgary to Vancouver</button>
+    <button class="nav-tab" onclick="showPanel('east',this,'active-east')">East — Newfoundland</button>
+    <button class="nav-tab" onclick="showPanel('notes',this,'active-east')">Notes &amp; logistics</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════ WEST ═══════════════════════════════ -->
+<div id="west" class="panel west active">
+
+  <div class="trip-summary">
+    <div class="stat-card"><div class="stat-val west-val">~1,060</div><div class="stat-lbl">km total</div></div>
+    <div class="stat-card"><div class="stat-val west-val">4</div><div class="stat-lbl">work hubs</div></div>
+    <div class="stat-card"><div class="stat-val west-val">11k+</div><div class="stat-lbl">m elevation</div></div>
+    <div class="stat-card"><div class="stat-val west-val">Mid Jul</div><div class="stat-lbl">start date</div></div>
+    <div class="stat-card"><div class="stat-val west-val">~4 wks</div><div class="stat-lbl">duration</div></div>
+  </div>
+
+  <div class="legend">
+    <div class="leg-pill"><div class="leg-dot" style="background:#fce8e4"></div>Fly / ferry</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--arrive)"></div>Arrive &amp; settle</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--work)"></div>Work day</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--depart)"></div>Depart Friday</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--ride)"></div>Riding day</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--rest)"></div>Rest / explore</div>
+  </div>
+
+  <!-- PRE-WEEK: CALGARY -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Pre-trip</div>
+      <div class="week-title">Calgary — with friend</div>
+      <div class="week-sub">Fly in · rest · bike check</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-fly">Fly in</div><div class="day-note">YYC arrival, friend picks up</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-rest">Rest</div><div class="day-note">Bike build, gear check, good meal</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-ride">Ride</div><div class="day-note">Calgary → Canmore ~110 km via Hwy 1A. Early start 7am</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-work">Work</div><div class="day-note">Canmore — settle, co-work space</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-work">Work</div><div class="day-note">Work + explore town</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-work">Work</div><div class="day-note">Work + pack, plan route</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-depart">Depart</div><div class="day-note">Canmore → Lake Louise ~80 km (Bow Valley Pkwy)</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row">Take Hwy 1A through Cochrane — quieter than Trans-Canada, stunning Rockies approach</div>
+        <div class="info-row">Leave Calgary by 7am — touring weight means slower pace than expected</div>
+        <div class="info-row good">Canmore has excellent co-working: Communitea Cafe, Canmore Public Library</div>
+        <div class="info-row warn">Book Canmore accommodation well ahead — peak July season fills fast</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 1: GOLDEN -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Week 1</div>
+      <div class="week-title">Golden, BC</div>
+      <div class="week-sub">~190 km covered from Calgary</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-ride">Ride</div><div class="day-note">Lake Louise → Field (Yoho NP) ~55 km</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-ride">Ride</div><div class="day-note">Field → Golden ~55 km (descent to Columbia valley)</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-arrive">Arrive</div><div class="day-note">Rest, find accommodation, set up workspace</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-work">Work</div><div class="day-note">Golden Library or cafes</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-work">Work</div><div class="day-note">Work + Columbia River walk</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-work">Work</div><div class="day-note">Work + gear check for next leg</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-depart">Depart</div><div class="day-note">Golden → Revelstoke ~150 km (or split overnight)</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row">Kicking Horse Pass (1,647 m) is behind you by the time you reach Golden — celebrate</div>
+        <div class="info-row warn">Friday's 150 km Golden→Revelstoke is long — consider an overnight in Revelstoke Saturday instead, push harder Sunday</div>
+        <div class="info-row good">Dreamcatcher Hostel in Golden is cycle-tourer friendly</div>
+        <div class="info-row">Connectivity is smaller-town; Golden Library is reliable fallback for work</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 2: KAMLOOPS -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Week 2</div>
+      <div class="week-title">Kamloops, BC</div>
+      <div class="week-sub">~450 km covered</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-ride">Ride</div><div class="day-note">Revelstoke → Sicamous ~80 km (Shuswap Lake)</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-ride">Ride</div><div class="day-note">Sicamous → Kamloops ~155 km (Shuswap valley)</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-arrive">Arrive</div><div class="day-note">Rest in Kamloops, set up workspace</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-work">Work</div><div class="day-note">The Hub co-work or Kamloops Library</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-work">Work</div><div class="day-note">Work — ride mornings only in this heat</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-work">Work</div><div class="day-note">Work + Thompson River walk eve</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-depart">Depart</div><div class="day-note">Kamloops → Cache Creek ~80 km (canyon begins)</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row warn">Sunday Sicamous→Kamloops is 155 km after a full weekend of riding — one of the toughest days on the trip</div>
+        <div class="info-row warn">Kamloops July temps 35–40°C — ride before 9am, work indoors midday</div>
+        <div class="info-row good">Great connectivity in Kamloops — city infrastructure, The Hub co-working space</div>
+        <div class="info-row">Bear spray essential through all Rockies and interior BC sections</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 3: FRASER VALLEY / FINISH -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Week 3</div>
+      <div class="week-title">Fraser Valley → Vancouver</div>
+      <div class="week-sub">~730 km → 1,060 km (finish)</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-ride">Ride</div><div class="day-note">Cache Creek → Lytton ~100 km (Thompson canyon)</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-ride">Ride</div><div class="day-note">Lytton → Hope ~100 km (Fraser Canyon)</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-arrive">Arrive</div><div class="day-note">Hope / Chilliwack — set up workspace</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-work">Work</div><div class="day-note">Chilliwack recommended over Hope for wifi</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-work">Work</div><div class="day-note">Work from Fraser Valley</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-work">Work</div><div class="day-note">Work + prep for finish weekend</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-depart">Depart</div><div class="day-note">Chilliwack → Langley ~65 km</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row warn">Hope has limited co-working — base yourself in Chilliwack (30 km further, flat, much better wifi)</div>
+        <div class="info-row good">Fraser Canyon (Lytton→Hope) is one of the most spectacular days on the whole trip</div>
+        <div class="info-row">Trans-Canada has good shoulder through canyon but heavy truck traffic — high-vis gear essential</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINISH WEEKEND -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Finish</div>
+      <div class="week-title">Vancouver — Stanley Park</div>
+      <div class="week-sub">Pacific coast complete</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-ride">Ride</div><div class="day-note">Langley → Burnaby ~50 km</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-finish">Finish</div><div class="day-note">Burnaby → Stanley Park seawall. Dip the wheel in the Pacific.</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-rest">Rest</div><div class="day-note">Vancouver — recover, celebrate</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-rest">Transit</div><div class="day-note">Fly or travel toward Halifax / home</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-rest">—</div><div class="day-note">Buffer / travel</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-rest">—</div><div class="day-note">Buffer before NL trip</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-rest">—</div><div class="day-note">Fly Halifax for ferry</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row good">Excellent cycling infrastructure from Langley all the way into Vancouver — bike paths much of the way</div>
+        <div class="info-row">Book Vancouver accommodation in advance — this is a celebration, treat yourself</div>
+        <div class="info-row warn">Allow 2–3 days between finishing Vancouver and starting Newfoundland — you'll need the rest</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════ EAST ═══════════════════════════════ -->
+<div id="east" class="panel east">
+
+  <div class="trip-summary">
+    <div class="stat-card"><div class="stat-val east-val">~1,095</div><div class="stat-lbl">km total</div></div>
+    <div class="stat-card"><div class="stat-val east-val">3</div><div class="stat-lbl">work hubs</div></div>
+    <div class="stat-card"><div class="stat-val east-val">East → West</div><div class="stat-lbl">direction</div></div>
+    <div class="stat-card"><div class="stat-val east-val">Mid Aug</div><div class="stat-lbl">start date</div></div>
+    <div class="stat-card"><div class="stat-val east-val">~3 wks</div><div class="stat-lbl">duration</div></div>
+  </div>
+
+  <div class="legend">
+    <div class="leg-pill"><div class="leg-dot" style="background:#fce8e4"></div>Fly / ferry</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--arrive)"></div>Arrive &amp; settle</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--work)"></div>Work day</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--depart)"></div>Depart Friday</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--ride)"></div>Riding day</div>
+    <div class="leg-pill"><div class="leg-dot" style="background:var(--rest)"></div>Rest / explore</div>
+  </div>
+
+  <!-- ARRIVAL -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Arrive</div>
+      <div class="week-title">St. John's, NL — fly in</div>
+      <div class="week-sub">YYZ → YYT direct · no ferry needed</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-fly">Fly in</div><div class="day-note">YYZ → YYT direct. Air Canada or WestJet. ~3.5 hrs.</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-rest">Explore</div><div class="day-note">Cape Spear — easternmost point of North America. Signal Hill. Screech-In.</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-arrive">Settle</div><div class="day-note">Set up workspace. St. John's is your first work hub.</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-work">Work</div><div class="day-note">George Street cafes or co-work — excellent connectivity</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-work">Work</div><div class="day-note">Work + explore The Rooms, Jellybean Row</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-work">Work</div><div class="day-note">Work + pack, plan first riding days</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-depart">Depart</div><div class="day-note">St. John's → Whitbourne ~80 km (easy first afternoon)</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row good">St. John's has the best connectivity of the whole NL leg — settle in properly before heading west</div>
+        <div class="info-row good">Cape Spear on Sunday sets the scene perfectly — you start at the most easterly point, ride to the most westerly ferry</div>
+        <div class="info-row">George Street area has good cafes; St. John's Public Library is a reliable work fallback</div>
+        <div class="info-row warn">Moose hazard begins immediately outside the city — ride alert, use lights at dawn/dusk</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 1: GANDER -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Week 1</div>
+      <div class="week-title">Grand Falls-Windsor, NL</div>
+      <div class="week-sub">~345 km covered · Central Newfoundland</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-ride">Ride</div><div class="day-note">Whitbourne → Clarenville ~110 km (Terra Nova approach)</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-ride">Ride</div><div class="day-note">Clarenville → Gander ~155 km (long but flat TCH)</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-arrive">Arrive</div><div class="day-note">Gander → Grand Falls-Windsor ~100 km. Arrive, set up.</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-work">Work</div><div class="day-note">Grand Falls Library — solid connectivity</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-work">Work</div><div class="day-note">Work + Exploits River walk</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-work">Work</div><div class="day-note">Work + pack for western push</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-depart">Depart</div><div class="day-note">Grand Falls → Badger ~80 km (short Friday, saving legs)</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row warn">Sunday Clarenville→Gander is 155 km — long after Saturday's 110 km. Start early, carry food.</div>
+        <div class="info-row warn">Monday is another 100 km arrive-day ride — three big days in a row. Pace yourself Sat/Sun.</div>
+        <div class="info-row good">Grand Falls-Windsor Library has reliable internet — best central NL work spot</div>
+        <div class="info-row">Gander is worth a stop — remarkable WWII aviation history, and the town that took in 9/11 diverted flights</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 2: CORNER BROOK / GROS MORNE -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Week 2</div>
+      <div class="week-title">Corner Brook, NL</div>
+      <div class="week-sub">~725 km covered · Gros Morne detour</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-ride">Ride</div><div class="day-note">Badger → Deer Lake ~125 km (boreal interior)</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-ride">Ride</div><div class="day-note">Deer Lake → Rocky Harbour (Gros Morne) ~75 km. Leave panniers at Deer Lake.</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-arrive">Arrive</div><div class="day-note">Rocky Harbour → Corner Brook ~90 km. Best wifi in western NL.</div></div>
+        <div class="day-col"><div class="day-name">Tue</div><div class="day-pill d-work">Work</div><div class="day-note">Corner Brook — Glynmill Inn area cafes</div></div>
+        <div class="day-col"><div class="day-name">Wed</div><div class="day-pill d-work">Work</div><div class="day-note">Work + explore Corner Brook</div></div>
+        <div class="day-col"><div class="day-name">Thu</div><div class="day-pill d-work">Work</div><div class="day-note">Work + gear check for final push</div></div>
+        <div class="day-col"><div class="day-name">Fri</div><div class="day-pill d-depart">Depart</div><div class="day-note">Corner Brook → Stephenville ~100 km</div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row good">Gros Morne Sunday — leave panniers in Deer Lake, ride light. The Tablelands are unmissable.</div>
+        <div class="info-row good">Corner Brook is the best work hub in western NL — proper city infrastructure</div>
+        <div class="info-row warn">Wreckhouse area ahead — notorious for extreme crosswinds. Check forecast before final push.</div>
+        <div class="info-row">Interior NL services are sparse — always carry 2+ days of food between Grand Falls and Deer Lake</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 3: FERRY FINISH -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num">Finish</div>
+      <div class="week-title">Port aux Basques → ferry home</div>
+      <div class="week-sub">~1,095 km · Island crossed</div>
+    </div>
+    <div class="week-card">
+      <div class="days-grid">
+        <div class="day-col"><div class="day-name">Sat</div><div class="day-pill d-ride">Ride</div><div class="day-note">Stephenville → Port aux Basques ~180 km. The final push.</div></div>
+        <div class="day-col"><div class="day-name">Sun</div><div class="day-pill d-fly">Ferry</div><div class="day-note">Board evening ferry Port aux Basques → North Sydney NS. Overnight crossing ~7 hrs.</div></div>
+        <div class="day-col"><div class="day-name">Mon</div><div class="day-pill d-fly">Fly home</div><div class="day-note">Arrive North Sydney ~6am. Transfer to Sydney (YQY) ~25 km. Fly YQY → YYZ.</div></div>
+        <div class="day-col"><div class="day-name">—</div><div class="day-pill d-rest">Done</div><div class="day-note">Home. You've crossed Newfoundland by bike.</div></div>
+        <div class="day-col"><div class="day-name">—</div><div class="day-pill d-rest">—</div><div class="day-note"></div></div>
+        <div class="day-col"><div class="day-name">—</div><div class="day-pill d-rest">—</div><div class="day-note"></div></div>
+        <div class="day-col"><div class="day-name">—</div><div class="day-pill d-rest">—</div><div class="day-note"></div></div>
+      </div>
+      <div class="week-info">
+        <div class="info-row warn">Sat is 180 km — your longest single day. Start at first light. This is the island's last throw at you.</div>
+        <div class="info-row good">Overnight ferry means you sleep on the boat — book a cabin. Arrive rested, fly home Monday.</div>
+        <div class="info-row good">Sydney YQY has direct flights to Toronto — check Air Canada. Halifax YHZ (3 hrs drive) has more options if needed.</div>
+        <div class="info-row">Marine Atlantic westbound (Port aux Basques → NS) in late August is far easier to book than eastbound</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════ NOTES ═══════════════════════════════ -->
+<div id="notes" class="panel">
+
+  <div class="notes-title" style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem">Logistics &amp; notes</div>
+
+  <div class="notes-grid">
+    <div class="note-card">
+      <h4>Book immediately</h4>
+      <ul>
+        <li>Marine Atlantic ferry (Port aux Basques → North Sydney) westbound — late Aug easier than eastbound but still book early. Book a cabin for the overnight crossing.</li>
+        <li>Canmore accommodation (peak July season)</li>
+        <li>Flights: YYC mid-July · YYT mid-August · YQY or YHZ → YYZ home Monday after ferry</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h4>Gear essentials</h4>
+      <ul>
+        <li>Bear spray — checked luggage only when flying. Buy in Calgary.</li>
+        <li>High-visibility vest — Trans-Canada truck traffic</li>
+        <li>Rain gear always accessible — NL fog rolls in fast</li>
+        <li>Lights front and rear — moose at dawn/dusk in NL</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h4>West coast alerts</h4>
+      <ul>
+        <li>Rogers Pass tunnel: call ahead, cyclists require escort</li>
+        <li>Kamloops heat: 35–40°C in July — ride before 9am</li>
+        <li>Hope wifi is poor — base at Chilliwack instead (30 km further)</li>
+        <li>Hwy 1A (vs Trans-Canada) for Calgary → Canmore — much nicer</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h4>Newfoundland alerts</h4>
+      <ul>
+        <li>Moose are a genuine hazard everywhere outside St. John's — dawn and dusk especially</li>
+        <li>Wreckhouse (near Port aux Basques on final day) — extreme crosswinds, check forecast before Sat ride</li>
+        <li>Interior NL: services 80+ km apart — always carry extra food/water</li>
+        <li>Deer Lake is a weekend stop only now — Corner Brook and Grand Falls are the work hubs</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h4>Work hub quick ref</h4>
+      <ul>
+        <li>Canmore: Communitea Cafe, Public Library ✓✓</li>
+        <li>Golden: Library (reliable fallback) ✓</li>
+        <li>Kamloops: The Hub co-work, Library ✓✓</li>
+        <li>Chilliwack: Good city connectivity ✓✓</li>
+        <li>St. John's: George Street cafes, Public Library ✓✓</li>
+        <li>Grand Falls-Windsor: Library ✓</li>
+        <li>Corner Brook: Glynmill Inn area cafes ✓✓</li>
+        <li>Grand Falls-Windsor: Library ✓</li>
+        <li>St. John's: George Street cafes ✓✓</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h4>Key distances</h4>
+      <ul>
+        <li>Calgary → Canmore: ~110 km (Hwy 1A)</li>
+        <li>Canmore → Lake Louise: ~80 km</li>
+        <li>Lake Louise → Golden: ~110 km</li>
+        <li>Golden → Revelstoke: ~150 km</li>
+        <li>Sicamous → Kamloops: ~155 km ⚠</li>
+        <li>Clarenville → St. John's: ~190 km ⚠</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem;padding:1.2rem 1.4rem;background:var(--card);border:1px solid var(--rule);border-radius:12px;border-left:3px solid var(--accent)">
+    <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:8px">Work rhythm reminder</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.7">
+      <strong style="color:var(--ink)">Mon</strong> — arrive at hub, find accommodation, set up workspace, rest &nbsp;·&nbsp;
+      <strong style="color:var(--ink)">Tue–Thu</strong> — full work days &nbsp;·&nbsp;
+      <strong style="color:var(--ink)">Fri</strong> — depart after work, shorter ride day &nbsp;·&nbsp;
+      <strong style="color:var(--ink)">Sat–Sun</strong> — full riding days, arrive next hub area
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Canada Cycling 2025 &nbsp;·&nbsp; Generated reference document &nbsp;·&nbsp; Update as plans change
+</footer>
+
+<script>
+function showPanel(id, btn, activeClass) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active-west','active-east'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add(activeClass);
+}
+</script>
+</body>
+</html>
